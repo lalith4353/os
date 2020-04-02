@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<conio.h>
+int no_of_resources;
+int no_of_processes;
+int current_instances[3][3];
+int maximum_instances[3][3];;
+int avail[3];
+int resource_allocation[3]={0,0,0};
+int maximum_resources[5];
+int processing[5];
+int safe=0;
+int count=0;
+int i,j;
+int main()
+{
+printf("\nenter no of processes available: ");
+scanf("processes are %d", &no_of_processes);
+for (i = 0; i < no_of_processes; i++) 
+{
+processing[i] = 1;
+count++;
+}
+printf("\nEnter number of resources available: ");
+scanf("resources are %d ", &no_of_resources);
+printf("\nEnter :");
+for (i = 0; i < no_of_resources; i++) 
+{ 
+scanf("%d", &maximum_resources[i]);
+}
+prinf("\n allocate the resources to processes");
+for (i = 0; i < no_of_processes; i++) 
+{
+for (i = 0; i < no_of_resources; i++)
+{
+scanf("%d",&current_instances[i][j]);
+}
+}
+return 0;
+}
