@@ -1,0 +1,170 @@
+#include<stdio.h> 
+int main() 
+{ 
+    int processes;
+    int resources;
+    int i,j;
+    int k=0;
+    int n;
+    int t1=0,t2=0; 
+    printf("Enter number of processes :"); 
+    scanf("%d",&processes); 
+    printf("Enter number of resources :"); 
+    scanf("%d",&resources); 
+    int max[processes][resources],
+    int allocation[processes][resources],
+    int avail[resources];
+    int required[processes][resources];
+    int instance;
+    int finish[processes];
+    int req[processes][resources]; 
+    for(i=0;i<processes;i++) 
+    {  
+     finish[i]=0;  
+    } 
+ 
+    printf("Enter instances of resources allocated to processes::\n"); 
+    for(i=0;i<processes;i++) 
+    { 
+     printf("P[%d]\t",i); 
+     for(j=0;j<resources;j++) 
+     { 
+      scanf("\n%d",&instance); 
+      allocation[i][j]=instance; 
+     } 
+    } 
+    printf("Enter Maximim instances of resources A,B and C required by the processes P0,P1 and P2\n"); 
+    for(i=0;i<processes;i++) 
+    { 
+      printf("P[%d]\t",i); 
+      for(j=0;j<resources;j++) 
+      { 
+       scanf("\n%d",&instance); 
+       max[i][j]=instance; 
+      } 
+    } 
+
+    printf("Enter available instances of resources::\n"); 
+    for(j=0;j<resources;j++) 
+    { 
+     scanf("\n%d",&instance); 
+     avail[j]=instance; 
+    } 
+    for(i=0;i<processes;i++) 
+    {  
+     for(j=0;j<resources;j++) 
+     { 
+      required[i][j]=max[i][j]-allocation[i][j]; 
+     } 
+      
+    }
+    printf("Enter no of instances of resources A,B and C required by the processes:"); 
+    for(i=0;i<processes;i++) 
+    {
+       printf("\nP[%d]\t",i); 
+       for(j=0;j<resources;j++) 
+       { 
+        printf("%d\t",required[i][j]); 
+ 
+       } 
+    } 
+    printf("\n\n"); 
+    printf("1 for normal safe sequence and 2 for independent additional resource request by P0 and 3 for independent additional resource request by P1\n"); 
+    scanf("\n%d",&n); 
+    switch(n) 
+    { 
+    case 1: 
+
+    printf("\n\n"); 
+    printf("safe sequence with no additional requests is =>\n"); 
+    printf("\n"); 
+    while(t1!=processes) 
+    { 
+     for(i=0;i<processes;i++) 
+     { 
+      for(j=0;j<resources;j++) 
+      { 
+       if(required[i][j]<=avail[j]) 
+       { 
+ 
+         k++; 
+ 
+       } 
+      }  
+      if(k==resources && finish[i]==0) 
+      { 
+       printf("P[%d]\t",i); 
+       finish[i]=1; 
+       for(j=0;j<resources;j++) 
+       { 
+        avail[j]=avail[j]+allocation[i][j]; 
+       } 
+       t1++; 
+      } 
+      k=0; 
+     }   
+    } 
+    break; 
+//P[0] requesting additional resources: 
+    case 2: 
+    printf("Enter additional resource request by P[0] processs\n"); 
+    printf("request[0]::\t"); 
+    for(j=0;j<resources;j++) 
+    {  
+     scanf("%d",&instance); 
+     req[0][j]=instance; 
+    } 
+    for(j=0;j<resource;j++) 
+    { 
+      if(req[0][j]<=need[0][j]) 
+      { 
+       if(req[0][j]<=avail[j]) 
+       { 
+        avail[j]=avail[j]-req[0][j]; 
+        allocation[0][j]=allocation[0][j]+req[0][j]; 
+        required[0][j]=required[0][j]-req[0][j]; 
+       } 
+       else 
+       { 
+       printf("P[0] should wait as resources are not available\n"); 
+       }
+      } 
+      else 
+      { 
+       printf("request has exceeded the maximum claim\n");
+      }   
+    }  
+    printf("sequence after additional request by P[0]  =>"); 
+    while(t1!=processes) 
+    { 
+     t2=t1; 
+     for(i=0;i<processes;i++) 
+     { 
+      for(j=0;j<resources;j++) 
+      { 
+       if(required[i][j]<=avail[j]) 
+       { 
+        k++; 
+       } 
+      } 
+      if(k==resources && finish[i]==0) 
+      { 
+       printf("P[%d]",i); 
+       finish[i]=1; 
+       for(j=0;j<resources;j++) 
+       { 
+         avail[j]=avail[j]+allocation[i][j]; 
+       } 
+       t1++; 
+      } 
+      k=0; 
+     } 
+     if(t1==t2) 
+     { 
+        
+       printf("Reenas operating system is unsafe if there is a additional request by P[0] there is a deadlock\n"); 
+       break; 
+     } 
+    }  
+
+    break; 
