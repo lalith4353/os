@@ -11,8 +11,8 @@ int main()
     scanf("%d",&processes); 
     printf("Enter number of resources :"); 
     scanf("%d",&resources); 
-    int max[processes][resources],
-    int allocation[processes][resources],
+    int max[processes][resources];
+    int allocation[processes][resources];
     int avail[resources];
     int required[processes][resources];
     int instance;
@@ -23,7 +23,7 @@ int main()
      finish[i]=0;  
     } 
  
-    printf("Enter instances of resources allocated to processes::\n"); 
+    printf("Enter instances of resources allocated to processes P0,P1 and P2=>\n"); 
     for(i=0;i<processes;i++) 
     { 
      printf("P[%d]\t",i); 
@@ -33,7 +33,7 @@ int main()
       allocation[i][j]=instance; 
      } 
     } 
-    printf("Enter Maximim instances of resources A,B and C required by the processes P0,P1 and P2\n"); 
+    printf("Enter Maximum instances of resources A,B and C required by the processes P0,P1 and P2\n"); 
     for(i=0;i<processes;i++) 
     { 
       printf("P[%d]\t",i); 
@@ -58,7 +58,8 @@ int main()
      } 
       
     }
-    printf("Enter no of instances of resources A,B and C required by the processes:"); 
+    printf("required:instances of resources A,B and C required by the processes P0,P1 and P2 is :\n");
+    printf("\tA\tB\tC"); 
     for(i=0;i<processes;i++) 
     {
        printf("\nP[%d]\t",i); 
@@ -69,7 +70,7 @@ int main()
        } 
     } 
     printf("\n\n"); 
-    printf("1 for normal safe sequence and 2 for independent additional resource request by P0 and 3 for independent additional resource request by P1\n"); 
+    printf("Hey!! enter 1 for safe sequence and 2 for independent additional resource request by P0 and 3 for independent additional resource request by P1\n"); 
     scanf("\n%d",&n); 
     switch(n) 
     { 
@@ -107,31 +108,31 @@ int main()
     break; 
 //P[0] requesting additional resources: 
     case 2: 
-    printf("Enter additional resource request by P[0] processs\n"); 
+    printf("Request:additional resource request by P[0] process\n"); 
     printf("additional request[0]=>\t"); 
     for(j=0;j<resources;j++) 
     {  
      scanf("%d",&instance); 
      add_req[0][j]=instance; 
     } 
-    for(j=0;j<resource;j++) 
+    for(j=0;j<resources;j++) 
     { 
-      if(add_req[0][j]<=need[0][j]) 
+      if(add_req[0][j]<=required[0][j]) 
       { 
        if(add_req[0][j]<=avail[j]) 
        { 
         avail[j]=avail[j]-add_req[0][j]; 
-        allocation[0][j]=allocation[0][j]+req[0][j]; 
+        allocation[0][j]=allocation[0][j]+add_req[0][j]; 
         required[0][j]=required[0][j]-add_req[0][j]; 
        } 
        else 
        { 
-       printf("P[0] should wait as resources are not available\n"); 
+       printf("P0 has to wait for resources\n"); 
        }
       } 
       else 
       { 
-       printf("request has exceeded the maximum claim\n");
+       printf("exceeded the maximum claim of resources\n");
       }   
     }  
     printf("sequence after additional request by P[0]  =>"); 
@@ -151,18 +152,20 @@ int main()
       { 
        printf("P[%d]",i); 
        finish[i]=1; 
-       for(j=0;j<resources;j++) 
+
+      for(j=0;j<resources;j++) 
        { 
          avail[j]=avail[j]+allocation[i][j]; 
        } 
        t1++; 
       } 
       k=0; 
-     } 
+     }
+     
      if(t1==t2) 
      { 
         
-       printf("Reenas operating system is unsafe if there is a additional request by P[0] there is a deadlock\n"); 
+       printf("\nStop!! Reena's operating system will be in unsafe state if there is a additional request by P[0]... there is a deadlock\n"); 
        break; 
      } 
     }  
@@ -171,44 +174,44 @@ int main()
  
 //For P[1] requesting additional resources 
     case 3: 
-    printf("Enter additional resource request by P[1] processs\n"); 
+    printf("Request:additional resource request by P[1] process\n"); 
     printf("additional request[0]:\t"); 
     for(j=0;j<resources;j++) 
     { 
      scanf("%d",&instance); 
      add_req[0][j]=instance; 
     } 
-    for(j=0;j<resource;j++) 
+    for(j=0;j<resources;j++) 
     { 
-     if(add_req[0][j]<=need[1][j]) 
+     if(add_req[0][j]<=required[1][j]) 
      { 
       if(add_req[0][j]<=avail[j]) 
       { 
-       avail[j]=avail[j]-req[0][j]; 
-       allocation[1][j]=allocation[1][j]+req[0][j]; 
+       avail[j]=avail[j]-add_req[0][j]; 
+       allocation[1][j]=allocation[1][j]+add_req[0][j]; 
        required[1][j]=required[1][j]-add_req[0][j]; 
       } 
       else 
       { 
-        printf("P[0] should wait as resources are not available\n"); 
+        printf("P1 has to wait for resources\n"); 
       } 
      }
      else 
      { 
-       printf(" has exceeded the maximum claim\n"); 
+       printf("exceeded the maximum claim of resources\n"); 
      }  
 
     } 
-    printf("The sequence after additional request by P[1] =>"); 
+    printf("sequence after additional request by P[1] =>"); 
   
-    while(t1!=process) 
+    while(t1!=processes) 
     { 
      t2=t1; 
      for(i=0;i<processes;i++) 
      { 
       for(j=0;j<resources;j++) 
       { 
-       if(need[i][j]<=avail[j]) 
+       if(required[i][j]<=avail[j]) 
        { 
         k++; 
        } 
@@ -230,7 +233,7 @@ int main()
      if(t1==t2) 
      { 
         
-      printf("Reenas operating system is unsafe if there is a additional request by P[1] there is a deadlock\n"); 
+      printf("\nStop!! Reena's operating system will be in unsafe state if there is a additional request by P[1]... there is a deadlock\n"); 
  
       break;  
      }  
